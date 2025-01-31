@@ -5,10 +5,10 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 const scene = new THREE.Scene();
 
 // 2. Создаем камеру
-const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 // Устанавливаем положение камеры
-camera.position.set(0, 0, 85); // Увеличиваем Z, чтобы отдалить объект
+camera.position.set(0, 0, 185); // Увеличиваем Z, чтобы отдалить объект
 
 // 3. Создаем рендерер
 const renderer = new THREE.WebGLRenderer({ antialias: true });
