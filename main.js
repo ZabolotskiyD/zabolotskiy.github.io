@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 // 1. Создаем сцену
 const scene = new THREE.Scene();
 // 2. Создаем камеру
