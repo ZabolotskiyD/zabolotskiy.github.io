@@ -1,4 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.module.js';
+import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.146/examples/jsm/loaders/RGBELoader.js';
+
 // 1. Создаем сцену
 const scene = new THREE.Scene();
 
