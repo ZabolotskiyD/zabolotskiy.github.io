@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { RGBELoader } from 'node_modules/three/examples/jsm/loaders/RGBELoader.js';
+import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/loaders/GLTFLoader.js';
 
 // 1. Создаем сцену
 const scene = new THREE.Scene();
