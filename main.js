@@ -1,12 +1,16 @@
 import * as THREE from "three";
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { MotionBlurPass } from 'three/examples/jsm/postprocessing/MotionBlurPass';
 
 // 1. Создаем сцену
 const scene = new THREE.Scene();
 
 // 2. Создаем камеру
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-// Устанавливаем положение камеры
 camera.position.set(0, 0, 185); // Увеличиваем Z, чтобы отдалить объект
 
 // 3. Создаем рендерер
@@ -65,20 +69,26 @@ window.addEventListener('mousemove', (event) => {
     // Нормализуем координаты мыши от -1 до 1
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-
     // Создаем луч (Ray) из камеры в направлении курсора
     const raycaster = new THREE.Raycaster();
     const mouseVector = new THREE.Vector2(mouseX, mouseY);
     raycaster.setFromCamera(mouseVector, camera);
-
     // Вычисляем точку пересечения луча с плоскостью Z = 0
     const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
     const intersection = new THREE.Vector3();
     raycaster.ray.intersectPlane(plane, intersection);
-
     // Устанавливаем целевую позицию куба
     targetCubePosition.copy(intersection);
 });
+
+// Инициализация EffectComposer и MotionBlurPass
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const motionBlurPass = new MotionBlurPass(scene, camera);
+motionBlurPass.velocityScale = 0.5; // Регулировка интенсивности эффекта
+composer.addPass(motionBlurPass);
 
 // 7. Функция анимации
 function animate() {
@@ -91,24 +101,19 @@ function animate() {
     } else {
         scrollVelocity = 0; // Останавливаем инерцию, если скорость слишком мала
     }
-
     // Ограничиваем значение прокрутки, чтобы камера не уходила слишком далеко
     targetScrollY = Math.max(-3, Math.min(3, targetScrollY));
-
     // Плавно интерполируем текущее значение прокрутки к целевому
     currentScrollY = THREE.MathUtils.lerp(currentScrollY, targetScrollY, lerpFactor);
-
     // Обновляем положение камеры по оси Y
     camera.position.y = -currentScrollY; // Инвертируем значение для интуитивного скролла
 
     // Вычисляем разницу между текущей позицией куба и целевой позицией
     const deltaX = targetCubePosition.x - cube.position.x;
     const deltaY = targetCubePosition.y - cube.position.y;
-
     // Обновляем скорость куба на основе разницы
     cubeVelocity.x += deltaX * cubeLerpFactor * 0.1;
     cubeVelocity.y += deltaY * cubeLerpFactor * 0.1;
-
     // Применяем инерцию для куба
     cubeVelocity.multiplyScalar(cubeInertiaDeceleration); // Замедляем скорость куба
     cube.position.add(cubeVelocity); // Обновляем позицию куба
@@ -117,8 +122,11 @@ function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
 
-    // Рендерим сцену с обновленной камерой
-    renderer.render(scene, camera);
+    // Обновляем MotionBlurPass
+    motionBlurPass.update(camera);
+
+    // Рендерим сцену с обновленной камерой через EffectComposer
+    composer.render();
 }
 
 // Запускаем анимацию
@@ -129,4 +137,5 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
 });
