@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'https://rawcdn.githack.com/ZabolotskiyD/zabolotskiy.github.io/fc9bfc530218ccfced2c0970891e9e1d184b067d/main.js';
 import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.146/examples/jsm/loaders/RGBELoader.js';
 
 // 1. Создаем сцену
