@@ -1,10 +1,5 @@
 import * as THREE from "three";
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { MotionBlurPass } from 'three/examples/jsm/postprocessing/MotionBlurPass';
+
 
 // 1. Создаем сцену
 const scene = new THREE.Scene();
