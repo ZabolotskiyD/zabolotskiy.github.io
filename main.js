@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-import { EffectComposer } from 'postprocessing';
-import { BloomEffect, MotionBlurEffect } from 'postprocessing';
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 
 // 1. Создаем сцену
 const scene = new THREE.Scene();
@@ -38,24 +40,35 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
 directionalLight.position.set(5, 5, 5).normalize();
 scene.add(directionalLight);
 
-// Добавляем дополнительный свет снизу слева
-const bottomLeftLight = new THREE.DirectionalLight(0xffffff, 1.5); // Интенсивность 1.5
-bottomLeftLight.position.set(-10, -10, 5); // Позиция света (снизу слева)
+const bottomLeftLight = new THREE.DirectionalLight(0xffffff, 1.5);
+bottomLeftLight.position.set(-10, -10, 5);
 scene.add(bottomLeftLight);
 
 // 7. Создаем EffectComposer и добавляем эффекты
 const composer = new EffectComposer(renderer);
 
-// Эффект Bloom
-const bloomEffect = new BloomEffect({
-    intensity: 2, // Интенсивность свечения
-    luminanceThreshold: 0.9, // Порог яркости для свечения
-});
-composer.addPass(bloomEffect);
+// Добавляем базовый RenderPass
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
 
-// Эффект Motion Blur
-const motionBlurEffect = new MotionBlurEffect();
-composer.addPass(motionBlurEffect);
+// Эффект Bloom
+const bloomPass = new BloomPass(
+    1.5, // strength (сила эффекта)
+    25,  // kernel size (размер ядра свечения)
+    4,   // sigma (размытие)
+    256  // разрешение для рендера
+);
+composer.addPass(bloomPass);
+
+// Эффект FilmPass (эффект пленки, например, зернистость)
+const filmPass = new FilmPass(
+    0.35, // noise intensity (интенсивность шума)
+    0.025, // scanline intensity (интенсивность линий сканирования)
+    648,   // scanline count (количество линий сканирования)
+    false  // grayscale (черно-белый режим)
+);
+filmPass.renderToScreen = true; // Этот эффект будет последним в цепочке
+composer.addPass(filmPass);
 
 // 8. Переменные для плавного скролла и инерции
 let targetScrollY = 0;
