@@ -31,7 +31,7 @@ composer.setSize(window.innerWidth, window.innerHeight);
 
 // Настройка BloomPass
 const bloomPass = new BloomPass(
-    0.5, // Уменьшаем силу эффекта
+    2, // Уменьшаем силу эффекта
     25,  // Размер ядра свечения
     4,   // Размытие
     256  // Разрешение для рендера
