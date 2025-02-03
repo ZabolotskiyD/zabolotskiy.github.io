@@ -27,7 +27,7 @@ roughness: 0.1,
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 // 6. Добавляем освещение (опционально)
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
 directionalLight.position.set(5, 5, 5).normalize();
 scene.add(directionalLight);
 // Устанавливаем начальное положение камеры
