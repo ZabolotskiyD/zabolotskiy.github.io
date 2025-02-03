@@ -10,12 +10,16 @@ const scene = new THREE.Scene();
 
 // 2. Создаем камеру
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 185);
+camera.position.set(0, 0, 50); // Приближаем камеру
 
 // 3. Создаем рендерер
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+// Настройка экспозиции (яркости) фона
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
 
 // 4. Создаем RGBELoader и загружаем HDR-текстуру
 const loader = new RGBELoader();
@@ -26,7 +30,7 @@ loader.load('https://rawcdn.githack.com/ZabolotskiyD/zabolotskiyd.github.io/1700
 });
 
 // 5. Создаем геометрию куба и материал
-const geometry = new THREE.BoxGeometry();
+const geometry = new THREE.BoxGeometry(10, 10, 10); // Увеличиваем размер куба
 const material = new THREE.MeshPhysicalMaterial({
     color: 0xff0000,
     metalness: 0.7,
@@ -36,11 +40,11 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 // 6. Добавляем освещение
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // Уменьшаем интенсивность света
 directionalLight.position.set(5, 5, 5).normalize();
 scene.add(directionalLight);
 
-const bottomLeftLight = new THREE.DirectionalLight(0xffffff, 1.5);
+const bottomLeftLight = new THREE.DirectionalLight(0xffffff, 1.0); // Уменьшаем интенсивность второго источника света
 bottomLeftLight.position.set(-10, -10, 5);
 scene.add(bottomLeftLight);
 
