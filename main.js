@@ -21,13 +21,32 @@ document.body.appendChild(renderer.domElement);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
 
-// 4. Создаем RGBELoader и загружаем HDR-текстуру
-const loader = new RGBELoader();
-loader.load('https://rawcdn.githack.com/ZabolotskiyD/zabolotskiyd.github.io/1700c409e6d8e04dd2db9938172170bf1924dc38/public/dark-light-studio.hdr', function(texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.environment = texture;
-    scene.background = texture;
-});
+ // 4. Создаем RGBELoader и загружаем HDR-текстуру
+ const loader = new RGBELoader();
+ loader.load(
+     'https://rawcdn.githack.com/ZabolotskiyD/zabolotskiyd.github.io/1700c409e6d8e04dd2db9938172170bf1924dc38/public/dark-light-studio.hdr',
+     function(texture) {
+         texture.mapping = THREE.EquirectangularReflectionMapping;
+         scene.environment = texture;
+         scene.background = texture;
+
+         // Убираем черный экран после загрузки текстуры
+         const loadingScreen = document.getElementById('loading-screen');
+
+         // Добавляем задержку перед исчезновением черного экрана
+         setTimeout(() => {
+             loadingScreen.classList.add('fade-out');
+         }, 1000); // Задержка в 1 секунду для видимости анимации
+
+         // Запускаем анимацию только после загрузки текстуры
+         animate();
+     },
+     undefined, // onProgress
+     (error) => {
+         console.error('Ошибка загрузки HDR-текстуры:', error);
+         alert('Не удалось загрузить HDR-текстуру. Проверьте консоль.');
+     }
+ );
 
 // 5. Создаем геометрию куба и материал
 const geometry = new THREE.BoxGeometry(10, 10, 10); // Увеличиваем размер куба
