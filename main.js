@@ -34,7 +34,7 @@ const geometry = new THREE.BoxGeometry(10, 10, 10); // Увеличиваем р
 const material = new THREE.MeshPhysicalMaterial({
     color: 0xff0000,
     metalness: 0.7,
-    roughness: 0.1,
+    roughness: 0.3,
 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
@@ -57,7 +57,7 @@ composer.addPass(renderPass);
 
 // Эффект Bloom
 const bloomPass = new BloomPass(
-    1.5, // strength (сила эффекта)
+    0.5, // strength (сила эффекта)
     25,  // kernel size (размер ядра свечения)
     4,   // sigma (размытие)
     256  // разрешение для рендера
