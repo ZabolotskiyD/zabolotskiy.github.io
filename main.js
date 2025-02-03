@@ -59,7 +59,7 @@ composer.addPass(renderPass);
 const bloomPass = new BloomPass(
     1.5, // strength (сила эффекта)
     25,  // kernel size (размер ядра свечения)
-    4,   // sigma (размытие)
+    2,   // sigma (размытие)
     256  // разрешение для рендера
 );
 composer.addPass(bloomPass);
