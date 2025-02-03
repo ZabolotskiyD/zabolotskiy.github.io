@@ -12,7 +12,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 // 4. Создаем RGBELoader и загружаем HDR-текстуру
 const loader = new RGBELoader();
-loader.load('/public/enviroment.hdr', function(texture) {
+loader.load('https://rawcdn.githack.com/ZabolotskiyD/zabolotskiyd.github.io/70719fe923fabe2e044dda0d7cb05bd072cb24d4/public/enviroment.hdr', function(texture) {
 texture.mapping = THREE.EquirectangularReflectionMapping;
 scene.environment = texture; // Устанавливаем HDR как окружение
 scene.background = texture; // Устанавливаем HDR как фон
